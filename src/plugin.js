@@ -46,8 +46,8 @@ $.Guides = function(options) {
   const prefix = this.prefixUrl || this.viewer.prefixUrl || '';
   const useGroup = this.viewer.buttons && this.viewer.buttons.buttons;
   const anyButton = useGroup ? this.viewer.buttons.buttons[0] : null;
-  const onFocusHandler = anyButton ? anyButton.onFocus : null;
-  const onBlurHandler = anyButton ? anyButton.onBlur : null;
+  const onFocus = anyButton ? anyButton.onFocus : null;
+  const onBlur = anyButton ? anyButton.onBlur : null;
 
   this.horizontalGuideButton = new $.Button({
     element: this.horizontalGuideButton ? $.getElement(this.horizontalGuideButton) : null,
@@ -59,8 +59,8 @@ $.Guides = function(options) {
     srcHover: prefix + this.navImages.guideHorizontal.HOVER,
     srcDown: prefix + this.navImages.guideHorizontal.DOWN,
     onRelease: this.createHorizontalGuide.bind(this),
-    onFocus: onFocusHandler,
-    onBlur:  onBlurHandler
+    onFocus,
+    onBlur
   });
 
   this.verticalGuideButton = new $.Button({
@@ -73,8 +73,8 @@ $.Guides = function(options) {
     srcHover: prefix + this.navImages.guideVertical.HOVER,
     srcDown: prefix + this.navImages.guideVertical.DOWN,
     onRelease: this.createVerticalGuide.bind(this),
-    onFocus: onFocusHandler,
-    onBlur:  onBlurHandler
+    onFocus,
+    onBlur
   });
 
   if (useGroup) {
@@ -87,7 +87,16 @@ $.Guides = function(options) {
 
 $.extend($.Guides.prototype, $.ControlDock.prototype, {
   createHorizontalGuide() {
-    console.log('Create horizontal guide');
+    const imagePoint = this.viewer.viewport.viewportToImageCoordinates(500, 350);
+
+    this.viewer.addOverlay({
+      id: 'test-guide', // Green overlay
+      className: 'guide guide-horizontal',
+      x: imagePoint.x,
+      y: imagePoint.y,
+      width: 1,
+      height: 0
+    });
   },
 
   createVerticalGuide() {
