@@ -10,6 +10,6 @@ const viewer = OpenSeadragon({
   minZoomImageRatio: 0.1
 });
 
-const guides = viewer.guides({
-
+viewer.guides({
+  prefixUrl: '/images/'
 });
