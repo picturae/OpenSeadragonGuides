@@ -4,10 +4,11 @@
   "description": "OpenSeadragon plugin that adds option to draw guidelines",
   "main": "index.js",
   "scripts": {
+    "build": "npm install && npm run lint && webpack --optimize-minimize",
+    "lint": "eslint src --ext .js",
     "start": "npm run watch",
-    "watch": "webpack-dev-server --port 3000 --inline",
-    "build": "webpack --optimize-minimize",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack-dev-server --port 3000 --inline"
   },
   "babel": {
     "presets": [
