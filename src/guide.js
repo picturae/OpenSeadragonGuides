@@ -2,7 +2,7 @@ import {$, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL} from './globals';
 
 export class Guide {
 
-  constructor(viewer, id, direction) {
+  constructor(viewer, id, direction = DIRECTION_HORIZONTAL) {
     this.viewer = viewer;
     this.direction = direction;
     this.id = id;
