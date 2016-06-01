@@ -89,9 +89,8 @@ $.extend($.Guides.prototype, $.ControlDock.prototype, {
   guides: [],
 
   createHorizontalGuide() {
-    const id = `test-guide-${this.guides.length}`;
-    const guide = new Guide(this.viewer, id, 'horizontal');
-    this.guides.push(guide);
+    const id = `guide-${this.guides.length}`;
+    this.guides.push(new Guide(this.viewer, id, 'horizontal'));
   },
 
   createVerticalGuide() {

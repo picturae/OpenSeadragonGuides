@@ -1,5 +1,6 @@
 export class Guide {
-  constructor(viewer, direction, id) {
+
+  constructor(viewer, id, direction) {
     this.viewer = viewer;
     this.direction = direction;
     this.id = id;
@@ -17,6 +18,8 @@ export class Guide {
       width: 1,
       height: 0
     });
-
   }
 }
+
+Guide.HORIZONTAL = Symbol('horizontal');
+Guide.VERTICAL = Symbol('vertical');
