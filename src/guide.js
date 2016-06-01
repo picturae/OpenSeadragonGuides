@@ -27,24 +27,19 @@ export class Guide {
       element: this.elem,
       clickTimeThreshold: this.viewer.clickTimeThreshold,
       clickDistThreshold: this.viewer.clickDistThreshold,
-      dragHandler: $.delegate(this, this._dragHandler),
-      dragEndHandler: $.delegate(this, this._dragEndHandler),
-      clickHandler: $.delegate(this, this._clickHandler),
-      dblClickHandler: $.delegate(this, this.remove)
-      // startDisabled: !this.isSelecting,
+      dragHandler: this._dragHandler.bind(this),
+      dragEndHandler: this._dragEndHandler.bind(this),
+      dblClickHandler: this.remove.bind(this)
     });
   }
 
   _dragHandler(event) {
-    console.log(event);
+    this.elem.classList.add('guide-drag');
+    console.log(this.viewer.currentOverlays);
   }
 
   _dragEndHandler(event) {
-    console.log(event);
-  }
-
-  _clickHandler(event) {
-    console.log(event);
+    this.elem.classList.remove('guide-drag');
   }
 }
 

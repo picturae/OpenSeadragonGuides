@@ -84,16 +84,17 @@ $.Guides = function(options) {
   }
 };
 
+// TODO: Check if extending from ControlDock is really nessasary
 $.extend($.Guides.prototype, $.ControlDock.prototype, {
   guides: [],
 
   createHorizontalGuide() {
-    const id = `guide-${this.guides.length}`;
+    const id = this.guides.length;
     this.guides.push(new Guide(this.viewer, id, DIRECTION_HORIZONTAL));
   },
 
   createVerticalGuide() {
-    const id = `guide-${this.guides.length}`;
+    const id = this.guides.length;
     this.guides.push(new Guide(this.viewer, id, DIRECTION_VERTICAL));
   }
 });
