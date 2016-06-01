@@ -1,3 +1,5 @@
+import {Guide} from './guide';
+
 const $ = OpenSeadragon;
 
 if (!$.version || $.version.major < 2) {
@@ -17,9 +19,7 @@ $.Viewer.prototype.guides = function(options) {
 };
 
 $.Guides = function(options) {
-  const self = this;
-
-  $.extend(true, self, {
+  $.extend(true, this, {
     // internal state properties
     viewer: null,
 
@@ -39,9 +39,9 @@ $.Guides = function(options) {
         DOWN: 'button_pressed.png'
       }
     }
-  }, options );
+  }, options);
 
-  $.extend(true, self.navImages, this.viewer.navImages);
+  $.extend(true, this.navImages, this.viewer.navImages);
 
   const prefix = this.prefixUrl || this.viewer.prefixUrl || '';
   const useGroup = this.viewer.buttons && this.viewer.buttons.buttons;
@@ -86,17 +86,12 @@ $.Guides = function(options) {
 };
 
 $.extend($.Guides.prototype, $.ControlDock.prototype, {
-  createHorizontalGuide() {
-    const imagePoint = this.viewer.viewport.viewportToImageCoordinates(500, 350);
+  guides: [],
 
-    this.viewer.addOverlay({
-      id: 'test-guide', // Green overlay
-      className: 'guide guide-horizontal',
-      x: imagePoint.x,
-      y: imagePoint.y,
-      width: 1,
-      height: 0
-    });
+  createHorizontalGuide() {
+    const id = `test-guide-${this.guides.length}`;
+    const guide = new Guide(this.viewer, id, 'horizontal');
+    this.guides.push(guide);
   },
 
   createVerticalGuide() {
