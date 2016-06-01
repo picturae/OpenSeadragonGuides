@@ -1,6 +1,5 @@
 import {Guide} from './guide';
-
-const $ = OpenSeadragon;
+import {$} from './globals';
 
 if (!$.version || $.version.major < 2) {
   throw new Error(
@@ -90,10 +89,11 @@ $.extend($.Guides.prototype, $.ControlDock.prototype, {
 
   createHorizontalGuide() {
     const id = `guide-${this.guides.length}`;
-    this.guides.push(new Guide(this.viewer, id, 'horizontal'));
+    this.guides.push(new Guide(this.viewer, id, Guide.DIRECTION_HORIZONTAL));
   },
 
   createVerticalGuide() {
-    console.log('Create vertical guide');
+    const id = `guide-${this.guides.length}`;
+    this.guides.push(new Guide(this.viewer, id, Guide.DIRECTION_VERTICAL));
   }
 });
