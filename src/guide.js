@@ -10,7 +10,6 @@ export class Guide {
 
   createOverlay() {
     this.viewer.addOverlay({
-      // Temporary using date as unique identifier
       id: this.id,
       className: 'guide guide-horizontal',
       x: this.viewer.viewport._oldCenterX,
