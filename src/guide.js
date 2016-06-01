@@ -1,4 +1,4 @@
-import {$} from './globals';
+import {$, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL} from './globals';
 
 export class Guide {
 
@@ -21,9 +21,6 @@ export class Guide {
   }
 }
 
-Guide.DIRECTION_HORIZONTAL = Symbol('horizontal');
-Guide.DIRECTION_VERTICAL = Symbol('vertical');
-
 function createElem(direction, id) {
   const elem = document.createElement('div');
 
@@ -31,10 +28,10 @@ function createElem(direction, id) {
   elem.classList.add('guide');
 
   switch (direction) {
-    case Guide.DIRECTION_HORIZONTAL:
+    case DIRECTION_HORIZONTAL:
       elem.classList.add('guide-horizontal');
       break;
-    case Guide.DIRECTION_VERTICAL:
+    case DIRECTION_VERTICAL:
       elem.classList.add('guide-vertical');
       break;
     default:

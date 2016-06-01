@@ -1,5 +1,5 @@
 import {Guide} from './guide';
-import {$} from './globals';
+import {$, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL} from './globals';
 
 if (!$.version || $.version.major < 2) {
   throw new Error(
@@ -89,11 +89,11 @@ $.extend($.Guides.prototype, $.ControlDock.prototype, {
 
   createHorizontalGuide() {
     const id = `guide-${this.guides.length}`;
-    this.guides.push(new Guide(this.viewer, id, Guide.DIRECTION_HORIZONTAL));
+    this.guides.push(new Guide(this.viewer, id, DIRECTION_HORIZONTAL));
   },
 
   createVerticalGuide() {
     const id = `guide-${this.guides.length}`;
-    this.guides.push(new Guide(this.viewer, id, Guide.DIRECTION_VERTICAL));
+    this.guides.push(new Guide(this.viewer, id, DIRECTION_VERTICAL));
   }
 });
