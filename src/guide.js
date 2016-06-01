@@ -10,14 +10,41 @@ export class Guide {
     this._createOverlay();
   }
 
+  remove() {
+    this.viewer.removeOverlay(this.elem);
+  }
+
   _createOverlay() {
-    const elem = createElem(this.direction, this.id);
     const centerPoint = new $.Point(
       this.viewer.viewport._oldCenterX,
       this.viewer.viewport._oldCenterY
     );
 
-    this.viewer.addOverlay(elem, centerPoint);
+    this.elem = createElem(this.direction, this.id);
+    this.viewer.addOverlay(this.elem, centerPoint);
+
+    this.tracker = new $.MouseTracker({
+      element: this.elem,
+      clickTimeThreshold: this.viewer.clickTimeThreshold,
+      clickDistThreshold: this.viewer.clickDistThreshold,
+      dragHandler: $.delegate(this, this._dragHandler),
+      dragEndHandler: $.delegate(this, this._dragEndHandler),
+      clickHandler: $.delegate(this, this._clickHandler),
+      dblClickHandler: $.delegate(this, this.remove)
+      // startDisabled: !this.isSelecting,
+    });
+  }
+
+  _dragHandler(event) {
+    console.log(event);
+  }
+
+  _dragEndHandler(event) {
+    console.log(event);
+  }
+
+  _clickHandler(event) {
+    console.log(event);
   }
 }
 
