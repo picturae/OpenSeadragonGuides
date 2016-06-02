@@ -3,7 +3,7 @@ import {$, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL} from './globals';
 
 if (!$.version || $.version.major < 2) {
   throw new Error(
-    'This version of OpenSeadragonRGB requires OpenSeadragon version 2.0.0+'
+    'This version of OpenSeadragon Guides requires OpenSeadragon version 2.0.0+'
   );
 }
 
