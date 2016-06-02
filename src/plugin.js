@@ -21,8 +21,12 @@ $.Guides = function(options) {
   $.extend(true, this, {
     // internal state properties
     viewer: null,
+    guides: [],
+    guideIndex: 0,
 
     // options
+    horizontalGuideButton: null,
+    verticalGuideButton: null,
     prefixUrl: null,
     navImages: {
       guideHorizontal: {
@@ -63,7 +67,7 @@ $.Guides = function(options) {
   });
 
   this.verticalGuideButton = new $.Button({
-    element: this.verticalGuideButton ? $.getElement(this.horizontalGuideButton) : null,
+    element: this.verticalGuideButton ? $.getElement(this.verticalGuideButton) : null,
     clickTimeThreshold: this.viewer.clickTimeThreshold,
     clickDistThreshold: this.viewer.clickDistThreshold,
     tooltip: $.getString('Tooltips.VerticalGuide') || 'vertical guide',
@@ -84,17 +88,14 @@ $.Guides = function(options) {
   }
 };
 
-// TODO: Check if extending from ControlDock is really nessasary
-$.extend($.Guides.prototype, $.ControlDock.prototype, {
-  guides: [],
-
+$.extend($.Guides.prototype, {
   createHorizontalGuide() {
-    const id = this.guides.length;
+    const id = this.guideIndex++;
     this.guides.push(new Guide(this.viewer, id, DIRECTION_HORIZONTAL));
   },
 
   createVerticalGuide() {
-    const id = this.guides.length;
+    const id = this.guideIndex++;
     this.guides.push(new Guide(this.viewer, id, DIRECTION_VERTICAL));
   }
 });
