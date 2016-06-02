@@ -7,29 +7,21 @@ export class Guide {
     this.direction = direction;
     this.id = id;
 
-    this.createOverlay();
-
-    this.addHandlers();
-  }
-
-  addHandlers() {
-    this.viewer.addHandler('open', this.draw.bind(this));
-    this.viewer.addHandler('animation', this.draw.bind(this));
-    this.viewer.addHandler('resize', this.draw.bind(this));
-    this.viewer.addHandler('rotate', this.draw.bind(this));
-  }
-
-  createOverlay() {
+    // Center guide by default
     this.point = new $.Point(
       this.viewer.viewport._oldCenterX,
       this.viewer.viewport._oldCenterY
     );
 
     this.elem = createElem(this.direction, this.id);
-    // this.viewer.addOverlay(this.elem, centerPoint);
     this.overlay = new $.Overlay(this.elem, this.point);
     this.draw();
 
+    this.addHandlers();
+  }
+
+  addHandlers() {
+    // Listen for mouse events on the guide
     this.tracker = new $.MouseTracker({
       element: this.elem,
       clickTimeThreshold: this.viewer.clickTimeThreshold,
@@ -38,6 +30,12 @@ export class Guide {
       dragEndHandler: this.dragEndHandler.bind(this),
       dblClickHandler: this.remove.bind(this)
     });
+
+    // Redraw guide when viewer changes
+    this.viewer.addHandler('open', this.draw.bind(this));
+    this.viewer.addHandler('animation', this.draw.bind(this));
+    this.viewer.addHandler('resize', this.draw.bind(this));
+    this.viewer.addHandler('rotate', this.draw.bind(this));
   }
 
   dragHandler(event) {
