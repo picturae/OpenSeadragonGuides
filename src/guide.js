@@ -7,39 +7,73 @@ export class Guide {
     this.direction = direction;
     this.id = id;
 
-    this._createOverlay();
+    this.createOverlay();
+
+    this.addHandlers();
   }
 
-  remove() {
-    this.viewer.removeOverlay(this.elem);
+  addHandlers() {
+    this.viewer.addHandler('open', this.draw.bind(this));
+    this.viewer.addHandler('animation', this.draw.bind(this));
+    this.viewer.addHandler('resize', this.draw.bind(this));
+    this.viewer.addHandler('rotate', this.draw.bind(this));
   }
 
-  _createOverlay() {
-    const centerPoint = new $.Point(
+  createOverlay() {
+    this.point = new $.Point(
       this.viewer.viewport._oldCenterX,
       this.viewer.viewport._oldCenterY
     );
 
     this.elem = createElem(this.direction, this.id);
-    this.viewer.addOverlay(this.elem, centerPoint);
+    // this.viewer.addOverlay(this.elem, centerPoint);
+    this.overlay = new $.Overlay(this.elem, this.point);
+    this.draw();
 
     this.tracker = new $.MouseTracker({
       element: this.elem,
       clickTimeThreshold: this.viewer.clickTimeThreshold,
       clickDistThreshold: this.viewer.clickDistThreshold,
-      dragHandler: this._dragHandler.bind(this),
-      dragEndHandler: this._dragEndHandler.bind(this),
+      dragHandler: this.dragHandler.bind(this),
+      dragEndHandler: this.dragEndHandler.bind(this),
       dblClickHandler: this.remove.bind(this)
     });
   }
 
-  _dragHandler(event) {
+  dragHandler(event) {
+    const delta = this.viewer.viewport.deltaPointsFromPixels(event.delta, true);
+
+    switch (this.direction) {
+      case DIRECTION_HORIZONTAL:
+        this.point.y += delta.y;
+        break;
+      case DIRECTION_VERTICAL:
+        this.point.x += delta.x;
+        break;
+    }
+
     this.elem.classList.add('guide-drag');
-    console.log(this.viewer.currentOverlays);
+    this.draw();
   }
 
-  _dragEndHandler(event) {
+  dragEndHandler() {
     this.elem.classList.remove('guide-drag');
+  }
+
+  draw() {
+    if (this.point) {
+      this.overlay.update(this.point);
+      this.overlay.drawHTML(this.viewer.drawer.container, this.viewer.viewport);
+    }
+
+    return this;
+  }
+
+  remove() {
+    this.overlay.destroy();
+    this.point = null;
+
+    return this;
   }
 }
 
