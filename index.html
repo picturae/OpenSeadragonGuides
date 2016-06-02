@@ -15,24 +15,22 @@
     }
 
     .od-guide {
-      z-index: 999;
+      z-index: 0;
       cursor: pointer;
     }
 
     .od-guide-horizontal {
-      left: 50% !important;
+      left: 0 !important;
       height: 2px !important;
-      width: 200% !important;
-      margin-left: -100% !important;
+      width: 100% !important;
       border-top: 1px solid #84FFD5;
       cursor: row-resize;
     }
 
     .od-guide-vertical {
-      top: 50% !important;
-      height: 200% !important;
+      top: 0 !important;
+      height: 100% !important;
       width: 2px !important;
-      margin-top: -100% !important;
       border-left: 1px solid #84FFD5;
       cursor: col-resize;
     }
@@ -43,5 +41,20 @@
 
 	<script src="node_modules/openseadragon/build/openseadragon/openseadragon.js"></script>
   <script src="dist/openseadragon-guides.js"></script>
+  <script>
+    // Demo viewer
+    var viewer = OpenSeadragon({
+      id: 'viewer-container',
+      prefixUrl: 'node_modules/openseadragon/build/openseadragon/images/',
+      crossOriginPolicy: 'Anonymous',
+      defaultZoomLevel: 1,
+      tileSources: 'http://openseadragon.github.io/example-images/highsmith/highsmith.dzi',
+      minZoomImageRatio: 0.1
+    });
+
+    viewer.guides({
+      prefixUrl: '/images/'
+    });
+  </script>
 </body>
 </html>
