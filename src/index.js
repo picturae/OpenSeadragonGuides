@@ -28,6 +28,7 @@ $.Guides = function(options) {
     horizontalGuideButton: null,
     verticalGuideButton: null,
     prefixUrl: null,
+    removeOnClose: false,
     navImages: {
       guideHorizontal: {
         REST: 'button_rest.png',
@@ -85,6 +86,14 @@ $.Guides = function(options) {
     this.viewer.buttons.element.appendChild(this.horizontalGuideButton.element);
     this.viewer.buttons.buttons.push(this.verticalGuideButton);
     this.viewer.buttons.element.appendChild(this.verticalGuideButton.element);
+  }
+
+  // Remove guides when viewer closes
+  if (this.removeOnClose) {
+    this.viewer.addHandler('close', () => {
+      this.guides.forEach(guide => guide.remove());
+      this.guides = [];
+    });
   }
 };
 

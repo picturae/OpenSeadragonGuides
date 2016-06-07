@@ -104,10 +104,6 @@
 	      this.viewer.addHandler('animation', this.draw.bind(this));
 	      this.viewer.addHandler('resize', this.draw.bind(this));
 	      this.viewer.addHandler('rotate', this.draw.bind(this));
-	
-	      // Remove guide on when viewer closes
-	      // Maybe should be an option?
-	      this.viewer.addHandler('close', this.remove.bind(this));
 	    }
 	  }, {
 	    key: 'dragHandler',
@@ -200,6 +196,8 @@
 	};
 	
 	/* harmony import */__WEBPACK_IMPORTED_MODULE_1__globals__["b"].Guides = function (options) {
+	  var _this = this;
+	
 	  /* harmony import */__WEBPACK_IMPORTED_MODULE_1__globals__["b"].extend(true, this, {
 	    // internal state properties
 	    viewer: null,
@@ -210,6 +208,7 @@
 	    horizontalGuideButton: null,
 	    verticalGuideButton: null,
 	    prefixUrl: null,
+	    removeOnClose: false,
 	    navImages: {
 	      guideHorizontal: {
 	        REST: 'button_rest.png',
@@ -267,6 +266,16 @@
 	    this.viewer.buttons.element.appendChild(this.horizontalGuideButton.element);
 	    this.viewer.buttons.buttons.push(this.verticalGuideButton);
 	    this.viewer.buttons.element.appendChild(this.verticalGuideButton.element);
+	  }
+	
+	  // Remove guides when viewer closes
+	  if (this.removeOnClose) {
+	    this.viewer.addHandler('close', function () {
+	      _this.guides.forEach(function (guide) {
+	        return guide.remove();
+	      });
+	      _this.guides = [];
+	    });
 	  }
 	};
 	

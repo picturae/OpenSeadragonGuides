@@ -36,10 +36,6 @@ export class Guide {
     this.viewer.addHandler('animation', this.draw.bind(this));
     this.viewer.addHandler('resize', this.draw.bind(this));
     this.viewer.addHandler('rotate', this.draw.bind(this));
-
-    // Remove guide on when viewer closes
-    // Maybe should be an option?
-    this.viewer.addHandler('close', this.remove.bind(this));
   }
 
   dragHandler(event) {
