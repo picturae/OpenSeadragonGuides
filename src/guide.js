@@ -8,10 +8,7 @@ export class Guide {
     this.id = id;
 
     // Center guide by default
-    this.point = new $.Point(
-      this.viewer.viewport._oldCenterX,
-      this.viewer.viewport._oldCenterY
-    );
+    this.point = this.viewer.viewport.getCenter();
 
     this.elem = createElem(this.direction, this.id);
     this.overlay = new $.Overlay(this.elem, this.point);
