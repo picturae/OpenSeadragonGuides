@@ -65,6 +65,11 @@ export class Guide {
   }
 
   remove() {
+    this.viewer.removeHandler('open', this.draw.bind(this));
+    this.viewer.removeHandler('animation', this.draw.bind(this));
+    this.viewer.removeHandler('resize', this.draw.bind(this));
+    this.viewer.removeHandler('rotate', this.draw.bind(this));
+
     this.overlay.destroy();
     this.point = null;
 
