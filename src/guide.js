@@ -47,12 +47,12 @@ export class Guide {
         break;
     }
 
-    this.elem.classList.add('od-guide-drag');
+    this.elem.classList.add('osd-guide-drag');
     this.draw();
   }
 
   dragEndHandler() {
-    this.elem.classList.remove('od-guide-drag');
+    this.elem.classList.remove('osd-guide-drag');
   }
 
   draw() {
@@ -80,15 +80,15 @@ export class Guide {
 function createElem(direction, id) {
   const elem = document.createElement('div');
 
-  elem.id = `od-guide-${id}`;
-  elem.classList.add('od-guide');
+  elem.id = `osd-guide-${id}`;
+  elem.classList.add('osd-guide');
 
   switch (direction) {
     case DIRECTION_HORIZONTAL:
-      elem.classList.add('od-guide-horizontal');
+      elem.classList.add('osd-guide-horizontal');
       break;
     case DIRECTION_VERTICAL:
-      elem.classList.add('od-guide-vertical');
+      elem.classList.add('osd-guide-vertical');
       break;
     default:
       throw new Error('Invalid guide direction');
