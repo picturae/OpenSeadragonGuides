@@ -1,18 +1,24 @@
 import {$, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL} from './globals';
+import session from './session';
 
 export class Guide {
 
-  constructor(viewer, id, direction = DIRECTION_HORIZONTAL) {
+  constructor(viewer, direction = DIRECTION_HORIZONTAL, id, x, y) {
     this.viewer = viewer;
     this.direction = direction;
-    this.id = id;
+    this.id = id ? id : Date.now();
 
     // Center guide by default
     this.point = this.viewer.viewport.getCenter();
+    this.point.x = x ? x : this.point.x;
+    this.point.y = y ? y : this.point.y;
 
     this.elem = createElem(this.direction, this.id);
     this.overlay = new $.Overlay(this.elem, this.point);
     this.draw();
+
+    // Store guide in session
+    this.saveInStorage();
 
     this.addHandlers();
   }
@@ -53,6 +59,7 @@ export class Guide {
 
   dragEndHandler() {
     this.elem.classList.remove('osd-guide-drag');
+    this.saveInStorage();
   }
 
   draw() {
@@ -73,7 +80,15 @@ export class Guide {
     this.overlay.destroy();
     this.point = null;
 
+    session.deleteGuide(this.id);
+
     return this;
+  }
+
+  saveInStorage() {
+    if (session.useStorage) {
+      session.addGuide(this.id, this.point.x, this.point.y, this.direction);
+    }
   }
 }
 

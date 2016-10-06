@@ -1,5 +1,6 @@
 import {Guide} from './guide';
 import {$, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL} from './globals';
+import session from './session';
 
 if (!$.version || $.version.major < 2) {
   throw new Error(
@@ -22,13 +23,13 @@ $.Guides = function(options) {
     // internal state properties
     viewer: null,
     guides: [],
-    guideIndex: 0,
 
     // options
     horizontalGuideButton: null,
     verticalGuideButton: null,
     prefixUrl: null,
     removeOnClose: false,
+    useSessionStorage: false,
     navImages: {
       guideHorizontal: {
         REST: 'button_rest.png',
@@ -88,6 +89,26 @@ $.Guides = function(options) {
     this.viewer.buttons.element.appendChild(this.verticalGuideButton.element);
   }
 
+  // Store globally so it can be used in the Guide objects
+  session.useStorage = this.useSessionStorage;
+
+  // Check if any guides are stored in sessionStorage
+  if (session.useStorage) {
+    const guides = session.getGuides();
+
+    guides.forEach(guide => {
+      this.guides.push(new Guide(
+        this.viewer,
+        guide.direction === 'horizontal' ?
+          DIRECTION_HORIZONTAL :
+          DIRECTION_VERTICAL,
+        guide.id,
+        guide.x,
+        guide.y
+      ));
+    });
+  }
+
   // Remove guides when viewer closes
   if (this.removeOnClose) {
     this.viewer.addHandler('close', () => {
@@ -99,13 +120,11 @@ $.Guides = function(options) {
 
 $.extend($.Guides.prototype, {
   createHorizontalGuide() {
-    const id = this.guideIndex++;
-    this.guides.push(new Guide(this.viewer, id, DIRECTION_HORIZONTAL));
+    this.guides.push(new Guide(this.viewer, DIRECTION_HORIZONTAL));
   },
 
   createVerticalGuide() {
-    const id = this.guideIndex++;
-    this.guides.push(new Guide(this.viewer, id, DIRECTION_VERTICAL));
+    this.guides.push(new Guide(this.viewer, DIRECTION_VERTICAL));
   }
 });
 
