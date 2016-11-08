@@ -1,6 +1,6 @@
 {
   "name": "OpenSeadragonGuides",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "OpenSeadragon plugin that adds option to draw guidelines",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,6 @@
     "webpack-dev-server": "^2.1.0-beta"
   },
   "dependencies": {
-    "openseadragon": "^2.2.0"
+    "openseadragon": "^2.1.0"
   }
 }
