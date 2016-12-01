@@ -32,16 +32,16 @@ $.Guides = function(options) {
     useSessionStorage: false,
     navImages: {
       guideHorizontal: {
-        REST: 'button_rest.png',
-        GROUP: 'button_grouphover.png',
-        HOVER: 'button_hover.png',
-        DOWN: 'button_pressed.png'
+        REST: 'guidehorizontal_rest.png',
+        GROUP: 'guidehorizontal_grouphover.png',
+        HOVER: 'guidehorizontal_hover.png',
+        DOWN: 'guidehorizontal_pressed.png'
       },
       guideVertical: {
-        REST: 'button_rest.png',
-        GROUP: 'button_grouphover.png',
-        HOVER: 'button_hover.png',
-        DOWN: 'button_pressed.png'
+        REST: 'guidevertical_rest.png',
+        GROUP: 'guidevertical_grouphover.png',
+        HOVER: 'guidevertical_hover.png',
+        DOWN: 'guidevertical_pressed.png'
       }
     }
   }, options);
