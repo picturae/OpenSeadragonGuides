@@ -24,7 +24,7 @@
 }
 
 .osd-guide-horizontal .osd-guide-line {
-  border-top: 1px solid #84FFD5;
+  border-top: 1px solid #D262F1;
 }
 
 .osd-guide-vertical {
@@ -37,5 +37,5 @@
 }
 
 .osd-guide-vertical .osd-guide-line {
-  border-left: 1px solid #84FFD5;
+  border-left: 1px solid #D262F1;
 }
