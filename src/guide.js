@@ -7,13 +7,14 @@ export class Guide {
     clickHandler,
     direction = DIRECTION_HORIZONTAL,
     id = Date.now(),
+    plugin,
     rotation = 0,
     viewer,
     x,
     y
   }) {
     this.viewer = viewer;
-    this.plugin = this.viewer.guidesInstance;
+    this.plugin = plugin;
     this.direction = direction;
     this.rotation = rotation;
     this.id = id;
@@ -34,6 +35,10 @@ export class Guide {
 
     if(clickHandler && this.plugin.allowRotation) {
       this.clickHandler = clickHandler;
+    }
+
+    if(this.plugin.allowRotation) {
+      this.rotate(this.rotation);
     }
 
     this.addHandlers();
@@ -126,11 +131,18 @@ export class Guide {
       this.line.style.webkitTransform = '';
       this.line.style.transform = '';
     }
+    this.saveInStorage();
   }
 
   saveInStorage() {
     if (session.useStorage) {
-      session.addGuide(this.id, this.point.x, this.point.y, this.direction);
+      session.addGuide(
+        this.id,
+        this.point.x,
+        this.point.y,
+        this.direction,
+        this.rotation
+      );
     }
   }
 }
