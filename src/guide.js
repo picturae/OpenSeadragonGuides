@@ -13,6 +13,7 @@ export class Guide {
     y
   }) {
     this.viewer = viewer;
+    this.plugin = this.viewer.guidesInstance;
     this.direction = direction;
     this.rotation = rotation;
     this.id = id;
@@ -31,7 +32,7 @@ export class Guide {
     // Store guide in session
     this.saveInStorage();
 
-    if(clickHandler && this.viewer.allowRotation) {
+    if(clickHandler && this.plugin.allowRotation) {
       this.clickHandler = clickHandler;
     }
 
@@ -100,6 +101,10 @@ export class Guide {
     this.point = null;
 
     session.deleteGuide(this.id);
+
+    if (this.plugin.allowRotation) {
+      this.plugin.closePopup();
+    }
 
     return this;
   }
