@@ -170,22 +170,22 @@ $.extend($.Guides.prototype, {
     popup.id = 'osd-guide-popup';
     popup.classList.add('osd-guide-popup');
     popup.style.position = 'absolute';
-    popup.style.top = '10px';
-    popup.style.right = '10px';
+    popup.style.bottom = '10px';
+    popup.style.left = '10px';
 
     const form = document.createElement('form');
     form.classList.add('osd-guide-popup-form');
     form.style.display = 'block';
     form.style.position = 'relative';
     form.style.background = '#fff';
-    form.style.padding = '5px 10px';
+    form.style.padding = '10px';
 
     popup.appendChild(form);
 
     const input = document.createElement('input');
     input.type = 'number';
     input.style.display = 'inline-block';
-    input.style.width = '40px';
+    input.style.width = '50px';
     input.style.fontSize = '14px';
     form.appendChild(input);
 
@@ -193,6 +193,7 @@ $.extend($.Guides.prototype, {
     rotateButton.type = 'submit';
     rotateButton.innerHTML = $.getString('Tool.rotate') || 'rotate';
     rotateButton.style.fontSize = '14px';
+    rotateButton.classList.add('osd-guide-rotate-button');
 
     rotateButton.addEventListener('click', () => {
       this.selectedGuide.rotate(input.value);
@@ -206,6 +207,7 @@ $.extend($.Guides.prototype, {
     closeButton.title = $.getString('Tool.close') || 'close';
     closeButton.style.fontWeight = 'bold';
     closeButton.style.fontSize = '14px';
+    closeButton.classList.add('osd-guide-close');
     closeButton.addEventListener('click', () => {
       this.closePopup();
     });
