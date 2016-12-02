@@ -122,6 +122,7 @@ $.Guides = function(options) {
     this.popup = this.createRotationPopup();
     this.viewer.addControl(this.popup, {});
     this.popup.style.display = 'none'; //add Controll sets display:block
+    this.popupInput = this.popup.querySelector('input');
   }
 };
 
@@ -147,13 +148,16 @@ $.extend($.Guides.prototype, {
   showPopup(guide) {
     this.popup.style.display = 'block';
     this.selectedGuide = guide;
+    this.popupInput.value = this.selectedGuide.rotation;
   },
 
   closePopup() {
     this.popup.style.display = 'none';
+    this.popupInput.value = '';
     this.selectedGuide = null;
   },
 
+  // TODO: Refactor popup into new class
   createRotationPopup() {
     const popup = document.createElement('div');
     popup.id = 'osd-guide-popup';
@@ -175,19 +179,30 @@ $.extend($.Guides.prototype, {
     input.type = 'number';
     input.style.display = 'inline-block';
     input.style.width = '40px';
+    input.style.fontSize = '14px';
     form.appendChild(input);
 
     const rotateButton = document.createElement('button');
     rotateButton.type = 'submit';
     rotateButton.innerHTML = $.getString('Tool.rotate') || 'rotate';
+    rotateButton.style.fontSize = '14px';
 
     rotateButton.addEventListener('click', () => {
       this.selectedGuide.rotate(input.value);
-      input.value = '';
       this.closePopup();
     });
 
     form.appendChild(rotateButton);
+
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '&times;';
+    closeButton.title = $.getString('Tool.close') || 'close';
+    closeButton.style.fontWeight = 'bold';
+    closeButton.style.fontSize = '14px';
+    closeButton.addEventListener('click', () => {
+      this.closePopup();
+    });
+    form.appendChild(closeButton);
 
     return popup;
   }
