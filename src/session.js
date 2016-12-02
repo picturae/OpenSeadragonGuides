@@ -3,7 +3,7 @@ import {DIRECTION_HORIZONTAL} from './globals';
 let useStorage = false;
 const STORAGE_ID = 'openseadragon-guides';
 
-function addGuide(id, x, y, dir) {
+function addGuide(id, x, y, dir, rotation) {
   const direction = dir === DIRECTION_HORIZONTAL ? 'horizontal' : 'vertical';
   const guidesList = getGuides();
   // Check if guide with this id already exists
@@ -13,8 +13,9 @@ function addGuide(id, x, y, dir) {
   if (guide) {
     guide.x = x;
     guide.y = y;
+    guide.rotation = rotation;
   } else {
-    guidesList.push({id, x, y, direction});
+    guidesList.push({id, x, y, direction, rotation});
   }
 
   saveData(guidesList);

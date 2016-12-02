@@ -3,10 +3,21 @@ import session from './session';
 
 export class Guide {
 
-  constructor(viewer, direction = DIRECTION_HORIZONTAL, id, x, y) {
+  constructor({
+    clickHandler,
+    direction = DIRECTION_HORIZONTAL,
+    id = Date.now(),
+    plugin,
+    rotation = 0,
+    viewer,
+    x,
+    y
+  }) {
     this.viewer = viewer;
+    this.plugin = plugin;
     this.direction = direction;
-    this.id = id ? id : Date.now();
+    this.rotation = rotation;
+    this.id = id;
 
     // Center guide by default
     this.point = this.viewer.viewport.getCenter();
@@ -14,11 +25,21 @@ export class Guide {
     this.point.y = y ? y : this.point.y;
 
     this.elem = createElem(this.direction, this.id);
+    this.line = createLine();
+    this.elem.appendChild(this.line);
     this.overlay = new $.Overlay(this.elem, this.point);
     this.draw();
 
     // Store guide in session
     this.saveInStorage();
+
+    if(clickHandler && this.plugin.allowRotation) {
+      this.clickHandler = clickHandler;
+    }
+
+    if(this.plugin.allowRotation) {
+      this.rotate(this.rotation);
+    }
 
     this.addHandlers();
   }
@@ -33,6 +54,10 @@ export class Guide {
       dragEndHandler: this.dragEndHandler.bind(this),
       dblClickHandler: this.remove.bind(this)
     });
+
+    if (this.clickHandler) {
+      this.tracker.clickHandler = this.clickHandler.bind(this);
+    }
 
     // Redraw guide when viewer changes
     this.viewer.addHandler('open', this.draw.bind(this));
@@ -82,19 +107,48 @@ export class Guide {
 
     session.deleteGuide(this.id);
 
+    if (this.plugin.allowRotation) {
+      this.plugin.closePopup();
+    }
+
     return this;
+  }
+
+  rotate(deg) {
+    if (parseFloat(deg)) {
+      switch (this.direction) {
+        case DIRECTION_HORIZONTAL:
+          this.line.style.webkitTransform = `rotateZ(${deg}deg)`;
+          this.line.style.transform = `rotateZ(${deg}deg)`;
+          break;
+        case DIRECTION_VERTICAL:
+          this.line.style.webkitTransform = `rotateZ(${deg}deg)`;
+          this.line.style.transform = `rotateZ(${deg}deg)`;
+          break;
+      }
+      this.rotation = deg;
+    } else {
+      this.line.style.webkitTransform = '';
+      this.line.style.transform = '';
+    }
+    this.saveInStorage();
   }
 
   saveInStorage() {
     if (session.useStorage) {
-      session.addGuide(this.id, this.point.x, this.point.y, this.direction);
+      session.addGuide(
+        this.id,
+        this.point.x,
+        this.point.y,
+        this.direction,
+        this.rotation
+      );
     }
   }
 }
 
 function createElem(direction, id) {
   const elem = document.createElement('div');
-
   elem.id = `osd-guide-${id}`;
   elem.classList.add('osd-guide');
 
@@ -110,4 +164,10 @@ function createElem(direction, id) {
   }
 
   return elem;
+}
+
+function createLine() {
+  const lineElem = document.createElement('div');
+  lineElem.classList.add('osd-guide-line');
+  return lineElem;
 }

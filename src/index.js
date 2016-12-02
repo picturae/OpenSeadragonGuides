@@ -25,6 +25,7 @@ $.Guides = function(options) {
     guides: [],
 
     // options
+    allowRotation: false,
     horizontalGuideButton: null,
     verticalGuideButton: null,
     prefixUrl: null,
@@ -97,15 +98,20 @@ $.Guides = function(options) {
     const guides = session.getGuides();
 
     guides.forEach(guide => {
-      this.guides.push(new Guide(
-        this.viewer,
-        guide.direction === 'horizontal' ?
+      const g = new Guide({
+        viewer: this.viewer,
+        direction: guide.direction === 'horizontal' ?
           DIRECTION_HORIZONTAL :
           DIRECTION_VERTICAL,
-        guide.id,
-        guide.x,
-        guide.y
-      ));
+        rotation: guide.rotation,
+        id: guide.id,
+        clickHandler: () => this.showPopup(g),
+        plugin: this,
+        x: guide.x,
+        y: guide.y
+      });
+
+      this.guides.push(g);
     });
   }
 
@@ -116,15 +122,98 @@ $.Guides = function(options) {
       this.guides = [];
     });
   }
+
+  if (this.allowRotation) {
+    this.popup = this.createRotationPopup();
+    this.viewer.addControl(this.popup, {});
+    this.popup.style.display = 'none'; //add Controll sets display:block
+    this.popupInput = this.popup.querySelector('input');
+  }
 };
 
 $.extend($.Guides.prototype, {
   createHorizontalGuide() {
-    this.guides.push(new Guide(this.viewer, DIRECTION_HORIZONTAL));
+    const guide = new Guide({
+      viewer: this.viewer,
+      plugin: this,
+      direction: DIRECTION_HORIZONTAL,
+      clickHandler: () => this.showPopup(guide)
+    });
+    this.guides.push(guide);
   },
 
   createVerticalGuide() {
-    this.guides.push(new Guide(this.viewer, DIRECTION_VERTICAL));
+    const guide = new Guide({
+      viewer: this.viewer,
+      plugin: this,
+      direction: DIRECTION_VERTICAL,
+      clickHandler: () => this.showPopup(guide)
+    });
+    this.guides.push(guide);
+  },
+
+  showPopup(guide) {
+    this.popup.style.display = 'block';
+    this.selectedGuide = guide;
+    this.popupInput.value = this.selectedGuide.rotation;
+  },
+
+  closePopup() {
+    this.popup.style.display = 'none';
+    this.popupInput.value = '';
+    this.selectedGuide = null;
+  },
+
+  // TODO: Refactor popup into new class
+  createRotationPopup() {
+    const popup = document.createElement('div');
+    popup.id = 'osd-guide-popup';
+    popup.classList.add('osd-guide-popup');
+    popup.style.position = 'absolute';
+    popup.style.bottom = '10px';
+    popup.style.left = '10px';
+
+    const form = document.createElement('form');
+    form.classList.add('osd-guide-popup-form');
+    form.style.display = 'block';
+    form.style.position = 'relative';
+    form.style.background = '#fff';
+    form.style.padding = '10px';
+
+    popup.appendChild(form);
+
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.style.display = 'inline-block';
+    input.style.width = '50px';
+    input.style.fontSize = '14px';
+    form.appendChild(input);
+
+    const rotateButton = document.createElement('button');
+    rotateButton.type = 'submit';
+    rotateButton.innerHTML = $.getString('Tool.rotate') || 'rotate';
+    rotateButton.style.fontSize = '14px';
+    rotateButton.classList.add('osd-guide-rotate-button');
+
+    rotateButton.addEventListener('click', () => {
+      this.selectedGuide.rotate(input.value);
+      this.closePopup();
+    });
+
+    form.appendChild(rotateButton);
+
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '&times;';
+    closeButton.title = $.getString('Tool.close') || 'close';
+    closeButton.style.fontWeight = 'bold';
+    closeButton.style.fontSize = '14px';
+    closeButton.classList.add('osd-guide-close');
+    closeButton.addEventListener('click', () => {
+      this.closePopup();
+    });
+    form.appendChild(closeButton);
+
+    return popup;
   }
 });
 
