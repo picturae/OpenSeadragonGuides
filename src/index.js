@@ -98,15 +98,20 @@ $.Guides = function(options) {
     const guides = session.getGuides();
 
     guides.forEach(guide => {
-      this.guides.push(new Guide({
+      const g = new Guide({
         viewer: this.viewer,
         direction: guide.direction === 'horizontal' ?
           DIRECTION_HORIZONTAL :
           DIRECTION_VERTICAL,
+        rotation: guide.rotation,
         id: guide.id,
+        clickHandler: () => this.showPopup(g),
+        plugin: this,
         x: guide.x,
         y: guide.y
-      }));
+      });
+
+      this.guides.push(g);
     });
   }
 
@@ -130,6 +135,7 @@ $.extend($.Guides.prototype, {
   createHorizontalGuide() {
     const guide = new Guide({
       viewer: this.viewer,
+      plugin: this,
       direction: DIRECTION_HORIZONTAL,
       clickHandler: () => this.showPopup(guide)
     });
@@ -139,6 +145,7 @@ $.extend($.Guides.prototype, {
   createVerticalGuide() {
     const guide = new Guide({
       viewer: this.viewer,
+      plugin: this,
       direction: DIRECTION_VERTICAL,
       clickHandler: () => this.showPopup(guide)
     });
