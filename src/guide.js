@@ -31,11 +31,7 @@ export class Guide {
     // Store guide in session
     this.saveInStorage();
 
-    // Create rotation button
-    // this.rotationButton = createRotationButton();
-    // this.elem.appendChild(this.rotationButton);
-
-    if(clickHandler) {
+    if(clickHandler && this.viewer.allowRotation) {
       this.clickHandler = clickHandler;
     }
 
