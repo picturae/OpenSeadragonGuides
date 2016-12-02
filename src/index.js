@@ -117,21 +117,79 @@ $.Guides = function(options) {
       this.guides = [];
     });
   }
+
+  if (this.allowRotation) {
+    this.popup = this.createRotationPopup();
+    this.viewer.addControl(this.popup, {});
+    this.popup.style.display = 'none'; //add Controll sets display:block
+  }
 };
 
 $.extend($.Guides.prototype, {
   createHorizontalGuide() {
-    this.guides.push(new Guide({
+    const guide = new Guide({
       viewer: this.viewer,
-      direction: DIRECTION_HORIZONTAL
-    }));
+      direction: DIRECTION_HORIZONTAL,
+      clickHandler: () => this.showPopup(guide)
+    });
+    this.guides.push(guide);
   },
 
   createVerticalGuide() {
-    this.guides.push(new Guide({
+    const guide = new Guide({
       viewer: this.viewer,
-      direction: DIRECTION_VERTICAL
-    }));
+      direction: DIRECTION_VERTICAL,
+      clickHandler: () => this.showPopup(guide)
+    });
+    this.guides.push(guide);
+  },
+
+  showPopup(guide) {
+    this.popup.style.display = 'block';
+    this.selectedGuide = guide;
+  },
+
+  closePopup() {
+    this.popup.style.display = 'none';
+    this.selectedGuide = null;
+  },
+
+  createRotationPopup() {
+    const popup = document.createElement('div');
+    popup.id = 'osd-guide-popup';
+    popup.classList.add('osd-guide-popup');
+    popup.style.position = 'absolute';
+    popup.style.top = '10px';
+    popup.style.right = '10px';
+
+    const form = document.createElement('form');
+    form.classList.add('osd-guide-popup-form');
+    form.style.display = 'block';
+    form.style.position = 'relative';
+    form.style.background = '#fff';
+    form.style.padding = '5px 10px';
+
+    popup.appendChild(form);
+
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.style.display = 'inline-block';
+    input.style.width = '40px';
+    form.appendChild(input);
+
+    const rotateButton = document.createElement('button');
+    rotateButton.type = 'submit';
+    rotateButton.innerHTML = $.getString('Tool.rotate') || 'rotate';
+
+    rotateButton.addEventListener('click', () => {
+      this.selectedGuide.rotate(input.value);
+      input.value = '';
+      this.closePopup();
+    });
+
+    form.appendChild(rotateButton);
+
+    return popup;
   }
 });
 
