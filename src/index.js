@@ -25,6 +25,7 @@ $.Guides = function(options) {
     guides: [],
 
     // options
+    allowRotation: false,
     horizontalGuideButton: null,
     verticalGuideButton: null,
     prefixUrl: null,
@@ -97,15 +98,15 @@ $.Guides = function(options) {
     const guides = session.getGuides();
 
     guides.forEach(guide => {
-      this.guides.push(new Guide(
-        this.viewer,
-        guide.direction === 'horizontal' ?
+      this.guides.push(new Guide({
+        viewer: this.viewer,
+        direction: guide.direction === 'horizontal' ?
           DIRECTION_HORIZONTAL :
           DIRECTION_VERTICAL,
-        guide.id,
-        guide.x,
-        guide.y
-      ));
+        id: guide.id,
+        x: guide.x,
+        y: guide.y
+      }));
     });
   }
 
@@ -120,11 +121,17 @@ $.Guides = function(options) {
 
 $.extend($.Guides.prototype, {
   createHorizontalGuide() {
-    this.guides.push(new Guide(this.viewer, DIRECTION_HORIZONTAL));
+    this.guides.push(new Guide({
+      viewer: this.viewer,
+      direction: DIRECTION_HORIZONTAL
+    }));
   },
 
   createVerticalGuide() {
-    this.guides.push(new Guide(this.viewer, DIRECTION_VERTICAL));
+    this.guides.push(new Guide({
+      viewer: this.viewer,
+      direction: DIRECTION_VERTICAL
+    }));
   }
 });
 

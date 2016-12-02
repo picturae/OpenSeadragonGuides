@@ -3,10 +3,18 @@ import session from './session';
 
 export class Guide {
 
-  constructor(viewer, direction = DIRECTION_HORIZONTAL, id, x, y) {
+  constructor({
+    viewer,
+    direction = DIRECTION_HORIZONTAL,
+    id = Date.now(),
+    rotation = 0,
+    x,
+    y
+  }) {
     this.viewer = viewer;
     this.direction = direction;
-    this.id = id ? id : Date.now();
+    this.rotation = rotation;
+    this.id = id;
 
     // Center guide by default
     this.point = this.viewer.viewport.getCenter();
@@ -14,11 +22,17 @@ export class Guide {
     this.point.y = y ? y : this.point.y;
 
     this.elem = createElem(this.direction, this.id);
+    this.line = createLine();
+    this.elem.appendChild(this.line);
     this.overlay = new $.Overlay(this.elem, this.point);
     this.draw();
 
     // Store guide in session
     this.saveInStorage();
+
+    // Create rotation button
+    // this.rotationButton = createRotationButton();
+    // this.elem.appendChild(this.rotationButton);
 
     this.addHandlers();
   }
@@ -31,14 +45,56 @@ export class Guide {
       clickDistThreshold: this.viewer.clickDistThreshold,
       dragHandler: this.dragHandler.bind(this),
       dragEndHandler: this.dragEndHandler.bind(this),
-      dblClickHandler: this.remove.bind(this)
+      dblClickHandler: this.dblClickHandler.bind(this)
     });
+
+    // this.tracker.clickHandler = this.clickHandler.bind(this)
 
     // Redraw guide when viewer changes
     this.viewer.addHandler('open', this.draw.bind(this));
     this.viewer.addHandler('animation', this.draw.bind(this));
     this.viewer.addHandler('resize', this.draw.bind(this));
     this.viewer.addHandler('rotate', this.draw.bind(this));
+  }
+
+  dblClickHandler() {
+    this.popup = this.createRotationPopup();
+    this.viewer.addControl(this.popup, {});
+  }
+
+  createRotationPopup() {
+    const popup = document.createElement('div');
+    popup.id = 'osd-guide-popup';
+    popup.classList.add('osd-guide-popup');
+
+    // Styling
+    popup.style.display = 'block';
+    popup.style.position = 'absolute';
+    popup.style.left = '50%';
+    popup.style.top = '50%';
+    popup.style.background = '#fff';
+    popup.style.width = '200px';
+    popup.style.height = '100px';
+    popup.style.marginLeft = '-100px';
+    popup.style.marginTop = '-50px';
+
+    const input = document.createElement('input');
+    input.type = 'number';
+    popup.appendChild(input);
+
+    const rotateButton = document.createElement('button');
+    rotateButton.innerHTML = $.getString('Tool.rotate') || 'rotate';
+
+    console.log('this', this);
+
+    //add functionality to reset button
+    rotateButton.addEventListener('click', () => {
+      this.rotate(input.value);
+    });
+
+    popup.appendChild(rotateButton);
+
+    return popup;
   }
 
   dragHandler(event) {
@@ -85,6 +141,24 @@ export class Guide {
     return this;
   }
 
+  rotate(deg) {
+    if (parseFloat(deg)) {
+      switch (this.direction) {
+        case DIRECTION_HORIZONTAL:
+          this.line.style.webkitTransform = `rotateZ(${deg}deg)`;
+          this.line.style.transform = `rotateZ(${deg}deg)`;
+          break;
+        case DIRECTION_VERTICAL:
+          this.line.style.webkitTransform = `rotateZ(${deg}deg)`;
+          this.line.style.transform = `rotateZ(${deg}deg)`;
+          break;
+      }
+    } else {
+      this.line.style.webkitTransform = '';
+      this.line.style.transform = '';
+    }
+  }
+
   saveInStorage() {
     if (session.useStorage) {
       session.addGuide(this.id, this.point.x, this.point.y, this.direction);
@@ -92,9 +166,22 @@ export class Guide {
   }
 }
 
+function createRotationButton() {
+  const button = document.createElement('button');
+
+  button.classList.add('osd-guide-rotation-button');
+  button.innerHTML = 'Rotate';
+
+  // Center button
+  button.style.position = 'absolute';
+  button.style.left = '50%';
+  button.style.top = '50%';
+
+  return button;
+}
+
 function createElem(direction, id) {
   const elem = document.createElement('div');
-
   elem.id = `osd-guide-${id}`;
   elem.classList.add('osd-guide');
 
@@ -110,4 +197,10 @@ function createElem(direction, id) {
   }
 
   return elem;
+}
+
+function createLine() {
+  const lineElem = document.createElement('div');
+  lineElem.classList.add('osd-guide-line');
+  return lineElem;
 }
