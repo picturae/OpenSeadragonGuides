@@ -4,10 +4,11 @@ import session from './session';
 export class Guide {
 
   constructor({
-    viewer,
+    clickHandler,
     direction = DIRECTION_HORIZONTAL,
     id = Date.now(),
     rotation = 0,
+    viewer,
     x,
     y
   }) {
@@ -34,6 +35,10 @@ export class Guide {
     // this.rotationButton = createRotationButton();
     // this.elem.appendChild(this.rotationButton);
 
+    if(clickHandler) {
+      this.clickHandler = clickHandler;
+    }
+
     this.addHandlers();
   }
 
@@ -45,56 +50,18 @@ export class Guide {
       clickDistThreshold: this.viewer.clickDistThreshold,
       dragHandler: this.dragHandler.bind(this),
       dragEndHandler: this.dragEndHandler.bind(this),
-      dblClickHandler: this.dblClickHandler.bind(this)
+      dblClickHandler: this.remove.bind(this)
     });
 
-    // this.tracker.clickHandler = this.clickHandler.bind(this)
+    if (this.clickHandler) {
+      this.tracker.clickHandler = this.clickHandler.bind(this);
+    }
 
     // Redraw guide when viewer changes
     this.viewer.addHandler('open', this.draw.bind(this));
     this.viewer.addHandler('animation', this.draw.bind(this));
     this.viewer.addHandler('resize', this.draw.bind(this));
     this.viewer.addHandler('rotate', this.draw.bind(this));
-  }
-
-  dblClickHandler() {
-    this.popup = this.createRotationPopup();
-    this.viewer.addControl(this.popup, {});
-  }
-
-  createRotationPopup() {
-    const popup = document.createElement('div');
-    popup.id = 'osd-guide-popup';
-    popup.classList.add('osd-guide-popup');
-
-    // Styling
-    popup.style.display = 'block';
-    popup.style.position = 'absolute';
-    popup.style.left = '50%';
-    popup.style.top = '50%';
-    popup.style.background = '#fff';
-    popup.style.width = '200px';
-    popup.style.height = '100px';
-    popup.style.marginLeft = '-100px';
-    popup.style.marginTop = '-50px';
-
-    const input = document.createElement('input');
-    input.type = 'number';
-    popup.appendChild(input);
-
-    const rotateButton = document.createElement('button');
-    rotateButton.innerHTML = $.getString('Tool.rotate') || 'rotate';
-
-    console.log('this', this);
-
-    //add functionality to reset button
-    rotateButton.addEventListener('click', () => {
-      this.rotate(input.value);
-    });
-
-    popup.appendChild(rotateButton);
-
-    return popup;
   }
 
   dragHandler(event) {
@@ -153,6 +120,7 @@ export class Guide {
           this.line.style.transform = `rotateZ(${deg}deg)`;
           break;
       }
+      this.rotation = deg;
     } else {
       this.line.style.webkitTransform = '';
       this.line.style.transform = '';
@@ -164,20 +132,6 @@ export class Guide {
       session.addGuide(this.id, this.point.x, this.point.y, this.direction);
     }
   }
-}
-
-function createRotationButton() {
-  const button = document.createElement('button');
-
-  button.classList.add('osd-guide-rotation-button');
-  button.innerHTML = 'Rotate';
-
-  // Center button
-  button.style.position = 'absolute';
-  button.style.left = '50%';
-  button.style.top = '50%';
-
-  return button;
 }
 
 function createElem(direction, id) {
