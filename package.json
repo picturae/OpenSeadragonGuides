@@ -1,6 +1,6 @@
 {
   "name": "OpenSeadragonGuides",
-  "version": "1.2.0",
+  "version": "1.1.4",
   "description": "OpenSeadragon plugin that adds option to draw guidelines",
   "main": "index.js",
   "scripts": {
