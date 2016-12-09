@@ -183,7 +183,7 @@ $.extend($.Guides.prototype, {
     popup.appendChild(form);
 
     const input = document.createElement('input');
-    input.type = 'number';
+    input.type = 'text';
     input.style.display = 'inline-block';
     input.style.width = '50px';
     input.style.fontSize = '14px';

@@ -130,6 +130,7 @@ export class Guide {
     } else {
       this.line.style.webkitTransform = '';
       this.line.style.transform = '';
+      this.rotation = 0;
     }
     this.saveInStorage();
   }
