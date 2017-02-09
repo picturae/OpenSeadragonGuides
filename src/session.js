@@ -3,6 +3,7 @@ import {DIRECTION_HORIZONTAL} from './globals';
 let useStorage = false;
 const STORAGE_ID = 'openseadragon-guides';
 
+// Add new guide to sessionStorage
 function addGuide(id, x, y, dir, rotation) {
   const direction = dir === DIRECTION_HORIZONTAL ? 'horizontal' : 'vertical';
   const guidesList = getGuides();
@@ -21,12 +22,14 @@ function addGuide(id, x, y, dir, rotation) {
   saveData(guidesList);
 }
 
+// Removes guide from sessionStorage
 function deleteGuide(id) {
   const guides = getGuides();
 
   saveData(guides.filter(guide => guide.id !== id));
 }
 
+// Gets array with guides from sessionStorage
 function getGuides() {
   const data = window.sessionStorage.getItem(STORAGE_ID);
 
@@ -37,6 +40,7 @@ function getGuides() {
   return [];
 }
 
+// Saves array with guides to sessionStorage
 function saveData(arr) {
   window.sessionStorage.setItem(
     STORAGE_ID,
