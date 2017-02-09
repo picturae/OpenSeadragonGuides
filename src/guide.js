@@ -78,6 +78,7 @@ export class Guide {
         break;
     }
 
+    // Add css class so we can change mouse cursor with css
     this.elem.classList.add('osd-guide-drag');
     this.draw();
   }
@@ -87,6 +88,7 @@ export class Guide {
     this.saveInStorage();
   }
 
+  // Draws html element in the Openseadragon viewer
   draw() {
     if (this.point) {
       this.overlay.update(this.point);
@@ -96,6 +98,7 @@ export class Guide {
     return this;
   }
 
+  // Remove event handlers and delete guide
   remove() {
     this.viewer.removeHandler('open', this.draw.bind(this));
     this.viewer.removeHandler('animation', this.draw.bind(this));
@@ -114,6 +117,7 @@ export class Guide {
     return this;
   }
 
+  // Rotates guide by degrees (css transform)
   rotate(deg) {
     if (parseFloat(deg)) {
       switch (this.direction) {
@@ -135,6 +139,7 @@ export class Guide {
     this.saveInStorage();
   }
 
+  // Adds guide to sessionStorage when useStorage option is set
   saveInStorage() {
     if (session.useStorage) {
       session.addGuide(
@@ -148,6 +153,7 @@ export class Guide {
   }
 }
 
+// Creates DOM element representing the guide
 function createElem(direction, id) {
   const elem = document.createElement('div');
   elem.id = `osd-guide-${id}`;
@@ -167,6 +173,7 @@ function createElem(direction, id) {
   return elem;
 }
 
+// Creates DOM element which is used to visually (by css) show the guideline
 function createLine() {
   const lineElem = document.createElement('div');
   lineElem.classList.add('osd-guide-line');
