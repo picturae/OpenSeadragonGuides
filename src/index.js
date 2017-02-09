@@ -8,6 +8,7 @@ if (!$.version || $.version.major < 2) {
   );
 }
 
+// Add new instance of Guides plugin to the viewers prototype
 $.Viewer.prototype.guides = function(options) {
   if (!this.guidesInstance || options) {
     options = options || {};
@@ -24,7 +25,7 @@ $.Guides = function(options) {
     viewer: null,
     guides: [],
 
-    // options
+    // Default options
     allowRotation: false,
     horizontalGuideButton: null,
     verticalGuideButton: null,
@@ -47,8 +48,11 @@ $.Guides = function(options) {
     }
   }, options);
 
+  // Add plugin buttons to the viewer
   $.extend(true, this.navImages, this.viewer.navImages);
 
+  // Openseadragon button behaviour, make sure the plugin's buttons act the
+  // same as the default buttons from the viewer
   const prefix = this.prefixUrl || this.viewer.prefixUrl || '';
   const useGroup = this.viewer.buttons && this.viewer.buttons.buttons;
   const anyButton = useGroup ? this.viewer.buttons.buttons[0] : null;
@@ -97,6 +101,7 @@ $.Guides = function(options) {
   if (session.useStorage) {
     const guides = session.getGuides();
 
+    // Creates a new Guide instance for every item in sessionStorage
     guides.forEach(guide => {
       const g = new Guide({
         viewer: this.viewer,
@@ -123,14 +128,16 @@ $.Guides = function(options) {
     });
   }
 
+  // A popup for user input is needed when rotation is allowed
   if (this.allowRotation) {
     this.popup = this.createRotationPopup();
     this.viewer.addControl(this.popup, {});
-    this.popup.style.display = 'none'; //add Controll sets display:block
+    this.popup.style.display = 'none';
     this.popupInput = this.popup.querySelector('input');
   }
 };
 
+// Add methods to the plugin's prototype
 $.extend($.Guides.prototype, {
   createHorizontalGuide() {
     const guide = new Guide({
@@ -165,6 +172,7 @@ $.extend($.Guides.prototype, {
   },
 
   // TODO: Refactor popup into new class
+  // Very basic popup containing an text input to set a guide's rotation
   createRotationPopup() {
     const popup = document.createElement('div');
     popup.id = 'osd-guide-popup';
