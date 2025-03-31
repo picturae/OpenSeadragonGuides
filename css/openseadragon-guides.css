@@ -15,12 +15,7 @@
 }
 
 .osd-guide-horizontal {
-  position: absolute;
-  left: 50% !important;
-  height: 2px !important;
-  width: 150% !important;
   cursor: row-resize;
-  transform: translateX(-50%);
 }
 
 .osd-guide-horizontal .osd-guide-line {
@@ -28,12 +23,7 @@
 }
 
 .osd-guide-vertical {
-  position: absolute;
-  top: 50% !important;
-  height: 150% !important;
-  width: 2px !important;
   cursor: col-resize;
-  transform: translateY(-50%);
 }
 
 .osd-guide-vertical .osd-guide-line {
