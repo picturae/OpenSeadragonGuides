@@ -27,7 +27,25 @@ export class Guide {
     this.elem = createElem(this.direction, this.id);
     this.line = createLine();
     this.elem.appendChild(this.line);
-    this.overlay = new $.Overlay(this.elem, this.point);
+
+    if (direction === DIRECTION_VERTICAL) {
+      this.point.y = -10;
+      this.overlay = new $.Overlay({
+        element: this.elem,
+        location: this.point,
+        height: 20,
+        width: 0.0001
+      });
+    } else {
+      this.point.x = -10;
+      this.overlay = new $.Overlay({
+        element: this.elem,
+        location: this.point,
+        width: 20,
+        height: 0.0001
+      });
+    }
+
     this.draw();
 
     // Store guide in session
