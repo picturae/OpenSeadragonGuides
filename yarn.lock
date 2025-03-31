@@ -2238,9 +2238,10 @@ onetime@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/onetime/-/onetime-1.1.0.tgz#a1f7838f8314c516f05ecefcbc4ccfe04b4ed789"
 
-openseadragon@^2.1.0:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-2.2.1.tgz#5f8ef0fdb7e0aa79e0fb0d927701466cf816bb2f"
+openseadragon@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-5.0.1.tgz#ad3aaccc6c0f733c3153131e9af05bc2e17a1952"
+  integrity sha512-a/hjouW9i3UfWxRADVYN2MyRhXMGnE7x9VVL7/4jXCcDLFyO4UM5o4RStYtqa5BfaHw/wMNAaD2WbxQF8f1pJg==
 
 opn@4.0.2:
   version "4.0.2"

@@ -27,6 +27,6 @@
     "webpack-dev-server": "^2.1.0-beta"
   },
   "dependencies": {
-    "openseadragon": "^2.1.0"
+    "openseadragon": "^5.0.1"
   }
 }
