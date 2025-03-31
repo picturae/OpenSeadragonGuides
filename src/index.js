@@ -54,7 +54,7 @@ $.Guides = function(options) {
   // Openseadragon button behaviour, make sure the plugin's buttons act the
   // same as the default buttons from the viewer
   const prefix = this.prefixUrl || this.viewer.prefixUrl || '';
-  const useGroup = this.viewer.buttons && this.viewer.buttons.buttons;
+  const useGroup = this.viewer.buttonGroup && this.viewer.buttonGroup.buttons;
   const anyButton = useGroup ? this.viewer.buttons.buttons[0] : null;
   const onFocus = anyButton ? anyButton.onFocus : null;
   const onBlur = anyButton ? anyButton.onBlur : null;
@@ -88,10 +88,10 @@ $.Guides = function(options) {
   });
 
   if (useGroup) {
-    this.viewer.buttons.buttons.push(this.horizontalGuideButton);
-    this.viewer.buttons.element.appendChild(this.horizontalGuideButton.element);
-    this.viewer.buttons.buttons.push(this.verticalGuideButton);
-    this.viewer.buttons.element.appendChild(this.verticalGuideButton.element);
+    this.viewer.buttonGroup.buttons.push(this.horizontalGuideButton);
+    this.viewer.buttonGroup.element.appendChild(this.horizontalGuideButton.element);
+    this.viewer.buttonGroup.buttons.push(this.verticalGuideButton);
+    this.viewer.buttonGroup.element.appendChild(this.verticalGuideButton.element);
   }
 
   // Store globally so it can be used in the Guide objects
