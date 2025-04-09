@@ -2,7 +2,6 @@
   "name": "@picturae/openseadragonguides",
   "version": "2.0.1",
   "description": "OpenSeadragon plugin that adds option to draw guidelines",
-  "main": "index.js",
   "scripts": {
     "build": "yarn && yarn run lint && webpack -p",
     "lint": "eslint src --ext .js",
@@ -18,6 +17,13 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/picturae/OpenSeadragonGuides.git.git"
+  },
+  "bugs": {
+    "url": "https://github.com/picturae/OpenSeadragonGuides/issues"
+  },
   "author": "Picturae (https://www.picturae.com)",
   "license": "MIT",
   "devDependencies": {
