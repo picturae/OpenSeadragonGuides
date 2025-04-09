@@ -1,12 +1,12 @@
 {
-  "name": "OpenSeadragonGuides",
+  "name": "@picturae/openseadragonguides",
   "version": "2.0.0",
   "description": "OpenSeadragon plugin that adds option to draw guidelines",
   "main": "index.js",
   "scripts": {
-    "build": "npm install && npm run lint && webpack -p",
+    "build": "yarn && yarn run lint && webpack -p",
     "lint": "eslint src --ext .js",
-    "start": "npm run watch",
+    "start": "yarn watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack-dev-server --port 8888 --inline"
   },
@@ -15,7 +15,10 @@
       "es2015"
     ]
   },
-  "author": "Picturae (http://www.picturae.com)",
+  "files": [
+    "dist"
+  ],
+  "author": "Picturae (https://www.picturae.com)",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.9.1",
