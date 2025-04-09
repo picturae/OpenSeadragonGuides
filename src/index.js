@@ -2,9 +2,9 @@ import {Guide} from './guide';
 import {$, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL} from './globals';
 import session from './session';
 
-if (!$.version || $.version.major < 2) {
+if (!$.version || $.version.major < 5) {
   throw new Error(
-    'This version of OpenSeadragon Guides requires OpenSeadragon version 2.0.0+'
+    'This version of OpenSeadragon Guides requires OpenSeadragon version 5.0.0+'
   );
 }
 
