@@ -8,7 +8,7 @@ https://picturae.github.io/openseadragonselection/#tabs-guides
 
 ## Usage
 
-This plugin requires a version of OpenSeadragon later than 2.0
+This plugin requires a version of OpenSeadragon later than 5.0.0
 
 Include `dist/openseadragon-guides.js` after OpenSeadragon in your html. Then after you create a viewer:
 
