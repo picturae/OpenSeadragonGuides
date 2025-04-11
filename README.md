@@ -4,7 +4,8 @@ An OpenSeadragon plugin that makes it possible to add guidelines to an image.
 
 ## Demo
 
-https://picturae.github.io/openseadragonselection/#tabs-guides
+The 'index.html' file in the root of the project shows a demo on how to use this plugin. You can view this demo by
+serving the root of repository. 
 
 ## Usage
 
