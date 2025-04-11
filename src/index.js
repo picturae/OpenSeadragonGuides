@@ -139,6 +139,9 @@ $.Guides = function(options) {
 
 // Add methods to the plugin's prototype
 $.extend($.Guides.prototype, {
+  /**
+   * Creates a new horizontal guide and adds it to the instance.
+   */
   createHorizontalGuide() {
     const guide = new Guide({
       viewer: this.viewer,
@@ -149,6 +152,9 @@ $.extend($.Guides.prototype, {
     this.guides.push(guide);
   },
 
+  /**
+   * Creates a new vertical guide and adds it to the instance.
+   */
   createVerticalGuide() {
     const guide = new Guide({
       viewer: this.viewer,
@@ -159,20 +165,57 @@ $.extend($.Guides.prototype, {
     this.guides.push(guide);
   },
 
+  /**
+   * Shows the rotation popup for the given guide.
+   * @param {Guide} guide
+   */
   showPopup(guide) {
     this.popup.style.display = 'block';
     this.selectedGuide = guide;
     this.popupInput.value = this.selectedGuide.rotation;
   },
 
+  /**
+   * Closes the rotation popup.
+   */
   closePopup() {
     this.popup.style.display = 'none';
     this.popupInput.value = '';
     this.selectedGuide = null;
   },
 
+  /**
+   * Destroys the given guide if it is part of the viewer and removes it from the list of active guides.
+   * @param {Guide} guide
+   */
+  remove(guide) {
+    const index = this.guides.indexOf(guide);
+
+    if (index === -1) {
+      return;
+    }
+
+    this.guides.splice(index, 1);
+    guide.remove();
+  },
+
+  /**
+   * Removes and destroys all current guides from the instance.
+   */
+  removeAll() {
+    // The spread operator is to make sure the guides are correctly deleted in order when at the same time removing
+    // them from the array.
+    for (const guide of [...this.guides]) {
+      this.remove(guide);
+    }
+  },
+
   // TODO: Refactor popup into new class
-  // Very basic popup containing an text input to set a guide's rotation
+  /**
+   * Creates a very basic popup for changing the rotation of the selected guide.
+   * @private
+   * @returns {HTMLDivElement}
+   */
   createRotationPopup() {
     const popup = document.createElement('div');
     popup.id = 'osd-guide-popup';
