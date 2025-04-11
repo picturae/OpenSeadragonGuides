@@ -18,12 +18,13 @@
 </head>
 <body>
   <div id="viewer-container"></div>
+  <button id="remove-all">Remove all guides</button>
 
   <script src="node_modules/openseadragon/build/openseadragon/openseadragon.js"></script>
   <script src="dist/openseadragon-guides.js"></script>
   <script>
     // Demo viewer
-    var viewer = OpenSeadragon({
+    const viewer = OpenSeadragon({
       id: 'viewer-container',
       prefixUrl: 'node_modules/openseadragon/build/openseadragon/images/',
       crossOriginPolicy: 'Anonymous',
@@ -44,10 +45,14 @@
       minZoomImageRatio: 0.1
     });
 
-    viewer.guides({
+    const guides = viewer.guides({
       prefixUrl: '/images/',
       allowRotation: true,
       useSessionStorage: true
+    });
+
+    document.getElementById('remove-all').addEventListener('click', () => {
+      guides.removeAll();
     });
   </script>
 </body>

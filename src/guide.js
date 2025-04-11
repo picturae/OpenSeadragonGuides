@@ -20,7 +20,7 @@ export class Guide {
     this.id = id;
 
     // Center guide by default
-    this.point = this.viewer.viewport.getCenter();
+    this.point = this.viewer.viewport.getCenter(true);
     this.point.x = x ? x : this.point.x;
     this.point.y = y ? y : this.point.y;
 
@@ -62,6 +62,9 @@ export class Guide {
     this.addHandlers();
   }
 
+  /**
+   * @private
+   */
   addHandlers() {
     // Listen for mouse events on the guide
     this.tracker = new $.MouseTracker({
@@ -84,6 +87,10 @@ export class Guide {
     this.viewer.addHandler('rotate', this.draw.bind(this));
   }
 
+  /**
+   * @private
+   * @param event
+   */
   dragHandler(event) {
     const delta = this.viewer.viewport.deltaPointsFromPixels(event.delta, true);
 
@@ -101,12 +108,19 @@ export class Guide {
     this.draw();
   }
 
+  /**
+   * @private
+   */
   dragEndHandler() {
     this.elem.classList.remove('osd-guide-drag');
     this.saveInStorage();
   }
 
-  // Draws html element in the Openseadragon viewer
+  /**
+   * Draws html element in the OpenSeadragon viewer
+   * @private
+   * @returns {Guide}
+   */
   draw() {
     if (this.point) {
       this.overlay.update(this.point);
@@ -116,7 +130,10 @@ export class Guide {
     return this;
   }
 
-  // Remove event handlers and delete guide
+  /**
+   * Destroys the guide instance and removes it from the session. Note that the object itself keeps existing.
+   * @returns {Guide} The guide that was destroyed.
+   */
   remove() {
     this.viewer.removeHandler('open', this.draw.bind(this));
     this.viewer.removeHandler('animation', this.draw.bind(this));
@@ -135,7 +152,10 @@ export class Guide {
     return this;
   }
 
-  // Rotates guide by degrees (css transform)
+  /**
+   * Rotates guide by degrees (css transform)
+   * @param deg
+   */
   rotate(deg) {
     if (parseFloat(deg)) {
       switch (this.direction) {
@@ -157,7 +177,9 @@ export class Guide {
     this.saveInStorage();
   }
 
-  // Adds guide to sessionStorage when useStorage option is set
+  /**
+   * Adds guide to sessionStorage when useStorage option is set
+   */
   saveInStorage() {
     if (session.useStorage) {
       session.addGuide(
@@ -171,7 +193,12 @@ export class Guide {
   }
 }
 
-// Creates DOM element representing the guide
+/**
+ * Creates DOM element representing the guide
+ * @param {DIRECTION_HORIZONTAL | DIRECTION_VERTICAL} direction The direction of the guide to create the element for.
+ * @param {string} id The id for the guide.
+ * @returns {HTMLDivElement}
+ */
 function createElem(direction, id) {
   const elem = document.createElement('div');
   elem.id = `osd-guide-${id}`;
@@ -191,7 +218,10 @@ function createElem(direction, id) {
   return elem;
 }
 
-// Creates DOM element which is used to visually (by css) show the guideline
+/**
+ * Creates DOM element which is used to visually (by css) show the guideline
+ * @returns {HTMLDivElement}
+ */
 function createLine() {
   const lineElem = document.createElement('div');
   lineElem.classList.add('osd-guide-line');
